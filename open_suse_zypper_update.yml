@@ -1,0 +1,10 @@
+---
+
+- hosts: 192.168.1.9
+  become: true
+  tasks:
+
+   - name: Update all packages on OpenSUSE/SUSE Linux
+     zypper:
+            name: '*'
+            state: latest
