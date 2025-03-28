@@ -1,7 +1,7 @@
 ---
 
 
- - hosts: 192.168.1.10
+ - hosts: all
    become: true
    tasks:
 
@@ -9,14 +9,38 @@
    - name: update repository index
      apt:
        update_cache: yes
+     when: ansible_distribution == "Ubuntu"
 
 
    - name: install apache2 package
      apt:
        name: apache2
        state: latest
+     when: ansible_distribution == "Ubuntu"
+
 
    - name: add php support for apache
      apt:
        name: libapache2-mod-php
        state: latest
+     when: ansible_distribution == "Ubuntu"
+
+
+   - name: update repository index
+     zypper:
+       name: '*'
+     when: ansible_distribution == "openSUSE Leap"
+
+
+   - name: install apache2 package
+     zypper:
+       name: apache2
+       state: present
+     when: ansible_distribution == "openSUSE Leap"
+
+
+   - name: add supertux2
+     zypper:
+       name:  supertux2
+       state: present
+     when: ansible_distribution == "openSUSE Leap" and ansible_distribution_version == "15.5"
