@@ -49,7 +49,34 @@
          -  apache2
          -  apache2-mod_php8
        state: present
-     when: ansible_distribution == "openSUSE Leap" and ansible_distribution_version == "15.5"
+     when: ansible_distribution == "openSUSE Leap"
+
+
+
+   - name: copy html file for site
+     tags: apache,apache2,opensuse
+     copy:
+       src: default_site.html
+       dest: /srv/www/htdocs/html_site/default_site.html
+       owner: root
+       group: root
+       mode: 0644
+     when: ansible_distribution == "openSUSE Leap"
+
+
+
+
+   - name: copy html file for site
+     tags: apache,apache2
+     copy:
+       src: default_site.html
+       dest: /var/www/html/index.html
+       owner: root
+       group: root
+       mode: 0644
+     when: ansible_distribution == "Ubuntu"
+
+
 
 
  - hosts: db_servers
