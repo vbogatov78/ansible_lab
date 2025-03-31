@@ -6,41 +6,25 @@
    tasks:
 
 
-   - name: update repository index
+
+   - name: install apache2 and php package
      apt:
+       name:
+         -  apache2
+         -  libapache2-mod-php
+       state: latest
        update_cache: yes
      when: ansible_distribution == "Ubuntu"
 
 
-   - name: install apache2 package
-     apt:
-       name: apache2
-       state: latest
-     when: ansible_distribution == "Ubuntu"
 
-
-   - name: add php support for apache
-     apt:
-       name: libapache2-mod-php
-       state: latest
-     when: ansible_distribution == "Ubuntu"
-
-
-   - name: update repository index
+   - name: install apache2 and supertux2 package
      zypper:
-       name: '*'
-     when: ansible_distribution == "openSUSE Leap"
-
-
-   - name: install apache2 package
-     zypper:
-       name: apache2
+       name:
+         -  apache2
+         -  supertux2
        state: present
-     when: ansible_distribution == "openSUSE Leap"
-
-
-   - name: add supertux2
-     zypper:
-       name:  supertux2
-       state: present
+       update_cache: yes
      when: ansible_distribution == "openSUSE Leap" and ansible_distribution_version == "15.5"
+
+

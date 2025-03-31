@@ -1,0 +1,92 @@
+---
+
+
+ - hosts: all
+   become: true
+   pre_tasks:
+
+
+
+   - name: install updates (OpenSUSE)
+     tags: always
+     zypper:
+             name: '*'
+             state: latest
+             update_cache: yes
+     when: ansible_distribution == "openSUSE Leap"
+
+
+
+   - name: install updates (Ubuntu)
+     tags: always
+     apt:
+       upgrade: yes
+       update_cache: yes
+     when: ansible_distribution == "Ubuntu"
+
+
+ - hosts: web_servers
+   become: true
+   tasks:
+
+
+
+   - name: install apache2 and php package
+     tags: apache,apache2,ubuntu
+     apt:
+       name:
+         -  apache2
+         -  libapache2-mod-php
+       state: latest
+     when: ansible_distribution == "Ubuntu"
+
+
+
+   - name: install apache2 and apache package
+     tags: apache,apache2,opensuse
+     zypper:
+       name:
+         -  apache2
+         -  apache2-mod_php8
+       state: present
+     when: ansible_distribution == "openSUSE Leap" and ansible_distribution_version == "15.5"
+
+
+ - hosts: db_servers
+   become: true
+   tasks:
+
+
+
+   - name: install mariadb (OpenSUSE)
+     tags: db,mariadb,opensuse
+     zypper:
+       name:
+         -  mariadb
+       state: latest
+     when: ansible_distribution == "openSUSE Leap"
+
+
+
+   - name: install mariadb (Ubuntu)
+     tags: db,mariadb,ubuntu
+     apt:
+       name:
+         -  mariadb
+       state: latest
+     when: ansible_distribution == "Ubuntu"
+
+
+
+ - hosts: file_servers
+   become: true
+   tasks:
+
+
+
+   - name: install samba package
+     tags: samba
+     package:
+       name: samba
+       state: latest
+
