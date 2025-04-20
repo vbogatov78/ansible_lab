@@ -1,0 +1,17 @@
+---
+
+
+
+
+- hosts: web_servers
+  become: true
+  tasks:
+
+
+   - name: start and enable apache2.service (OpenSuse Leap)
+     tags: apache,opensuse,apache2
+     ansible.builtin.service:
+       name: apache2
+       state: started
+       enabled: true
+

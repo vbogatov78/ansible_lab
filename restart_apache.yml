@@ -1,0 +1,42 @@
+---
+
+
+
+
+
+ - hosts: web_servers
+   become: true
+   tasks:
+
+
+
+
+
+      - name: Replace email in vhost config for ansible.conf
+        ansible.builtin.replace:
+          path: /etc/apache2/vhosts.d/ansible.conf
+          regexp: '^ServerAdmin webmaster@dummy-host.example.com'
+          replace: 'ServerAdmin somebody@somewhere.net'
+#        when: ansible_distribution == "OpenSuse Leap"
+
+
+#     - name: change e-mail address for admin
+#       tags: apache,opensuse,apache2
+#       lineinfile:
+#         path: /etc/apache2/vhosts.d/ansible.conf
+#         regexp: '^ServerAdmin'
+#         line: ServerAdmin somebody@somewhere.net
+#       when: ansible_distribution == "OpenSuse Leap"
+#       register: apache2
+
+
+      - name: restart apache2 (OpenSuse)
+        tags: apache,opensuse,apache2
+        ansible.builtin.service:
+         name: apache2
+         state: restarted
+
+
+
+
+
